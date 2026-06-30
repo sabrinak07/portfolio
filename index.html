@@ -415,6 +415,9 @@
         </div>
         <!-- honeypot: hidden from humans, bots fill it in and get rejected -->
         <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
+        <!-- set dynamically before submit: nicer subject line + reply-to the sender -->
+        <input type="hidden" name="_subject" value="New portfolio message" />
+        <input type="hidden" name="_replyto" value="" />
         <button type="submit" class="btn primary" id="submitBtn" style="justify-content:center;">Send message</button>
         <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
       </form>
@@ -465,6 +468,9 @@
     submitBtn.textContent = 'Sending…';
     note.style.color = '';
     note.textContent = '';
+    // dynamic subject + reply-to so "Reply" goes straight to the sender
+    form.querySelector('input[name="_subject"]').value = `New portfolio message from ${name}`;
+    form.querySelector('input[name="_replyto"]').value = email;
     try {
       const res = await fetch(form.action, {
         method: 'POST',
